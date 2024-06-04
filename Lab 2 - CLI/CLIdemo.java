@@ -1,4 +1,4 @@
-package com.mybank.tui;
+//package com.mybank.tui;
 
 import com.mybank.domain.Bank;
 import com.mybank.domain.CheckingAccount;
@@ -7,6 +7,7 @@ import com.mybank.domain.SavingsAccount;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
+import com.mybank.reporting.CustomerReport;
 
 import org.jline.reader.*;
 import org.jline.reader.impl.completer.*;
@@ -105,13 +106,21 @@ public class CLIdemo {
             } else if ("exit".equals(line)) {
                 System.out.println("Exiting application");
                 return;
-            } else {
+            } else if ("report".equals(line)){
+                System.out.println("Creating report...");
+                generateCustomerReport();
+            }else {
                 System.out
                         .println(ANSI_RED + "Invalid command, For assistance press TAB or type \"help\" then hit ENTER." + ANSI_RESET);
             }
         }
 
         AnsiConsole.systemUninstall();
+    }
+    
+    private void generateCustomerReport(){
+        CustomerReport custReport = new CustomerReport();
+        custReport.generateReport();
     }
 
     private void printWelcomeMessage() {
