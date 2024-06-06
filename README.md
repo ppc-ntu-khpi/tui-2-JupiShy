@@ -6,9 +6,15 @@
 
 ![](images/capture1.png)
 
+## Завдання на 4
+
+Додала код для читання з файлу з минулої ПР
+
+![](images/capture3.png)
+
 ## Завдання на 5
 
-![](images/capture2.png)
+![](images/capture4.png)
 
 Підключила com.mybank.reporting.CustomerReport;
 
