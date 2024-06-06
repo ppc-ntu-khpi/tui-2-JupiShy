@@ -8,6 +8,10 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import com.mybank.reporting.CustomerReport;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 import org.jline.reader.*;
 import org.jline.reader.impl.completer.*;
@@ -152,10 +156,37 @@ public class CLIdemo {
 
     public static void main(String[] args) {
 
-        Bank.addCustomer("John", "Doe");
-        Bank.addCustomer("Fox", "Mulder");
-        Bank.getCustomer(0).addAccount(new CheckingAccount(2000));
-        Bank.getCustomer(1).addAccount(new SavingsAccount(1000, 3));
+           try (BufferedReader br = new BufferedReader(new FileReader("test.dat"))) {
+            int numberOfCustomers = Integer.parseInt(br.readLine());
+            for (int i = 0; i < numberOfCustomers; i++) {
+                br.readLine();
+                String[] customerInfo = br.readLine().split("\t");
+
+                Bank.addCustomer(customerInfo[0], customerInfo[1]);
+                
+                int numberOfAccounts = Integer.parseInt(customerInfo[2]);
+                
+                Customer customer = Bank.getCustomer(i);
+
+                for (int j = 0; j < numberOfAccounts; j++) {
+                    String[] accountInfo = br.readLine().split("\t");
+                    String accountType = accountInfo[0];
+                    double balance = Double.parseDouble(accountInfo[1]);
+                    switch (accountType) {
+                        case "S":
+                            double interestRate = Double.parseDouble(accountInfo[2]);
+                            customer.addAccount(new SavingsAccount(balance, interestRate));
+                            break;
+                        case "C":
+                            double overdraftAmount = Double.parseDouble(accountInfo[2]);
+                            customer.addAccount(new CheckingAccount(balance, overdraftAmount));
+                            break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         CLIdemo shell = new CLIdemo();
         shell.init();
